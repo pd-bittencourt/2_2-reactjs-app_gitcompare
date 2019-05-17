@@ -23,9 +23,8 @@ export const Form = styled.form`
     border: 0;
     border-radius: 3px;
     transition: all 0.2s ease;
-    &:focus {
-      box-shadow: 0 0 0 3px #63f5b899;
-    }
+
+    box-shadow: ${props => (props.withError ? '0 0 0 3px #f00' : 0)};
   }
   button {
     font-size: 18px;
