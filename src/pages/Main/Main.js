@@ -9,6 +9,7 @@ import CompareList from '../../components/CompareList';
 
 class Main extends Component {
   state = {
+    loading: false,
     repositoryError: false,
     repositoryInput: '',
     repositories: [],
@@ -17,6 +18,8 @@ class Main extends Component {
   handleAddRepository = async (e) => {
     const { repositoryInput, repositories } = this.state;
     e.preventDefault();
+
+    this.setState({ loading: true });
 
     try {
       const { data: repository } = await api.get(`/repos/${repositoryInput}`);
@@ -30,11 +33,15 @@ class Main extends Component {
       });
     } catch (err) {
       this.setState({ repositoryError: true });
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
   render() {
-    const { repositoryError, repositoryInput, repositories } = this.state;
+    const {
+      loading, repositoryError, repositoryInput, repositories,
+    } = this.state;
     return (
       <Container>
         <img src={logo} alt="Github Compare" />
@@ -45,7 +52,7 @@ class Main extends Component {
             value={repositoryInput}
             onChange={e => this.setState({ repositoryInput: e.target.value })}
           />
-          <button type="submit">OK</button>
+          <button type="submit">{loading ? <i className="fa fa-spinner fa-pulse" /> : 'OK'}</button>
         </Form>
 
         <CompareList repositories={repositories} />
