@@ -27,7 +27,7 @@ export const Form = styled.form`
     box-shadow: ${props => (props.withError ? '0 0 0 3px #f00' : 0)};
   }
   button {
-    width: 80px;
+    width: 180px;
     font-size: 18px;
     padding-left: 20px;
     padding-right: 20px;

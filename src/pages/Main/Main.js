@@ -51,9 +51,6 @@ class Main extends Component {
     }
   };
 
-  // get localStorage data function
-  getLocalData = async () => JSON.parse(await localStorage.getItem('appData')) || [];
-
   handleRemoveRepo = async (id) => {
     const { repositories } = this.state;
     const updatedRepositories = repositories.filter(repository => repository.id !== id);
@@ -61,6 +58,40 @@ class Main extends Component {
     this.setState({ repositories: updatedRepositories });
     await localStorage.setItem('appData', JSON.stringify(updatedRepositories));
   };
+
+  handleUpdateRepo = async (id) => {
+    const { repositories } = this.state;
+    this.setState({ loading: true });
+
+    const repo = repositories.find(repository => repository.id === id);
+
+    try {
+      const { data } = await api.get(`/repos/${repo.full_name}`);
+
+      data.lastCommit = moment(data.pushed_at).fromNow();
+
+      const updatedRepositories = repositories.map((repository) => {
+        if (repository.id === data.id) {
+          return data;
+        }
+        return repository;
+      });
+
+      this.setState({
+        // if repo has same id return new data, otherwise return repo
+        repositories: updatedRepositories,
+        repositoryError: false,
+        loading: false,
+      });
+
+      await localStorage.setItem('appData', JSON.stringify(updatedRepositories));
+    } catch (err) {
+      this.setState({ repositoryError: true });
+    }
+  };
+
+  // get localStorage data function
+  getLocalData = async () => JSON.parse(await localStorage.getItem('appData')) || [];
 
   render() {
     const {
@@ -76,10 +107,16 @@ class Main extends Component {
             value={repositoryInput}
             onChange={e => this.setState({ repositoryInput: e.target.value })}
           />
-          <button type="submit">{loading ? <i className="fa fa-spinner fa-pulse" /> : 'OK'}</button>
+          <button type="submit">
+            {loading ? <i className="fa fa-spinner fa-pulse" /> : 'Compare'}
+          </button>
         </Form>
 
-        <CompareList repositories={repositories} removeRepo={this.handleRemoveRepo} />
+        <CompareList
+          repositories={repositories}
+          removeRepo={this.handleRemoveRepo}
+          updateRepo={this.handleUpdateRepo}
+        />
       </Container>
     );
   }

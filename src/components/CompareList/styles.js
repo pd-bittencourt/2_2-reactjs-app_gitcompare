@@ -58,6 +58,7 @@ export const Repository = styled.div`
 
   .button-group {
     display: flex;
+    flex-direction: column;
   }
 
   button {
@@ -69,6 +70,7 @@ export const Repository = styled.div`
     border-radius: 3px;
     padding: 10px;
     margin: 10px;
+    cursor: pointer;
     transition: all 0.2s ease;
     &:nth-child(2n-1) {
       background: #638a9e;
@@ -78,7 +80,7 @@ export const Repository = styled.div`
     }
     &:nth-child(2n) {
       background: #e33338;
-      margin-left: 0;
+      margin-top: 0;
       &:hover {
         background: #e33338cc;
       }
