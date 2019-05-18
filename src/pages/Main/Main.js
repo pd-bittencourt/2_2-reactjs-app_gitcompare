@@ -15,6 +15,14 @@ class Main extends Component {
     repositories: [],
   };
 
+  // get localStorage data and update state
+  async componentDidMount() {
+    this.setState({
+      loading: false,
+      repositories: await this.getLocalData(),
+    });
+  }
+
   handleAddRepository = async (e) => {
     const { repositoryInput, repositories } = this.state;
     e.preventDefault();
@@ -31,12 +39,20 @@ class Main extends Component {
         repositories: [...repositories, repository],
         repositoryError: false,
       });
+
+      // get localStorage data
+      const localData = await this.getLocalData();
+      // set localstorage
+      await localStorage.setItem('appData', JSON.stringify([...localData, repository]));
     } catch (err) {
       this.setState({ repositoryError: true });
     } finally {
       this.setState({ loading: false });
     }
   };
+
+  // get localStorage data function
+  getLocalData = async () => JSON.parse(await localStorage.getItem('appData')) || [];
 
   render() {
     const {
