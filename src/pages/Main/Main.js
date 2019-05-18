@@ -54,6 +54,14 @@ class Main extends Component {
   // get localStorage data function
   getLocalData = async () => JSON.parse(await localStorage.getItem('appData')) || [];
 
+  handleRemoveRepo = async (id) => {
+    const { repositories } = this.state;
+    const updatedRepositories = repositories.filter(repository => repository.id !== id);
+
+    this.setState({ repositories: updatedRepositories });
+    await localStorage.setItem('appData', JSON.stringify(updatedRepositories));
+  };
+
   render() {
     const {
       loading, repositoryError, repositoryInput, repositories,
@@ -71,7 +79,7 @@ class Main extends Component {
           <button type="submit">{loading ? <i className="fa fa-spinner fa-pulse" /> : 'OK'}</button>
         </Form>
 
-        <CompareList repositories={repositories} />
+        <CompareList repositories={repositories} removeRepo={this.handleRemoveRepo} />
       </Container>
     );
   }

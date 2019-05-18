@@ -55,4 +55,33 @@ export const Repository = styled.div`
       font-style: italic;
     }
   }
+
+  .button-group {
+    display: flex;
+  }
+
+  button {
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    margin: 10px;
+    transition: all 0.2s ease;
+    &:nth-child(2n-1) {
+      background: #638a9e;
+      &:hover {
+        background: #638a9ecc;
+      }
+    }
+    &:nth-child(2n) {
+      background: #e33338;
+      margin-left: 0;
+      &:hover {
+        background: #e33338cc;
+      }
+    }
+  }
 `;

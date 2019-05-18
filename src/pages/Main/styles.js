@@ -32,14 +32,14 @@ export const Form = styled.form`
     padding-left: 20px;
     padding-right: 20px;
     margin-left: 10px;
-    background: #63f5b8;
+    background: #1ff79d;
     color: #fff;
     font-weight: bold;
     border: 0;
     border-radius: 3px;
     transition: background 0.2s ease;
     &:hover {
-      background: #63f5b899;
+      background: #1ff79d99;
     }
   }
 `;
